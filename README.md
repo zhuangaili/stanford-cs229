@@ -1,3 +1,5 @@
+http://cs229.stanford.edu/syllabus.html
+
 **Goal** of notebooks in this directory:
 
 Use jupyter to explain **my understanding** of and **implement** algorithms from
