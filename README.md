@@ -1,4 +1,4 @@
-http://cs229.stanford.edu/syllabus.html
+Answers to excercises from CS229 (Autumn 2017). http://cs229.stanford.edu/syllabus.html
 
 **Goal** of notebooks in this directory:
 
