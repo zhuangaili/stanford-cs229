@@ -1,5 +1,10 @@
 Answers to excercises from CS229 (Autumn 2017). http://cs229.stanford.edu/syllabus.html
 
+1. http://cs229.stanford.edu/ps/ps1/ps1.pdf
+1. http://cs229.stanford.edu/ps/ps2/ps2.pdf
+1. http://cs229.stanford.edu/ps/ps3/ps3.pdf
+
+
 **Goal** of notebooks in this directory:
 
 Use jupyter to explain **my understanding** of and **implement** algorithms from
