@@ -3,7 +3,7 @@ Answers to excercises from CS229 (Autumn 2017). http://cs229.stanford.edu/syllab
 1. http://cs229.stanford.edu/ps/ps1/ps1.pdf
 1. http://cs229.stanford.edu/ps/ps2/ps2.pdf
 1. http://cs229.stanford.edu/ps/ps3/ps3.pdf
-
+1. http://cs229.stanford.edu/ps/ps4/ps4.pdf
 
 **Goal** of notebooks in this directory:
 
