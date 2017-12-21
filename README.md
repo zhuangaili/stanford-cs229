@@ -1,20 +1,10 @@
-Answers to excercises from CS229 (Autumn 2017). http://cs229.stanford.edu/syllabus.html
+This repo records my attempts to finish all excercises from CS229 (Autumn 2017).
+http://cs229.stanford.edu/syllabus.html
 
-1. http://cs229.stanford.edu/ps/ps1/ps1.pdf
-1. http://cs229.stanford.edu/ps/ps2/ps2.pdf
-1. http://cs229.stanford.edu/ps/ps3/ps3.pdf
-1. http://cs229.stanford.edu/ps/ps4/ps4.pdf
+I usually record all details in Jupyter notebooks.
 
-**Goal** of notebooks in this directory:
-
-Use jupyter to explain **my understanding** of and **implement** algorithms from
-Andrew Ng's course [CS299](http://cs229.stanford.edu/syllabus.html) and
-**demonstrate** the working of the implemented algorithms with toy examples.
-
-The three key elements are
-
-1. Understand
-2. Implement
-3. Demonstrate
-
-Progress may not be added in order.
+I finished everything except the last problem on Problem set 4, ""Reinforcement
+learning: the inverted pendulum problem"". The link to the data seems broken
+when I try to work on it. If you have access to the data, please let me know.
+I've implemented value iteration and policy iteration before in javascript for
+the gridworld at https://rljs.herokuapp.com/gridworld-dp.
