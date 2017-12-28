@@ -7,11 +7,12 @@ __pycache__
 lele*
 
 
-Problem-set-4/images_test.csv
-Problem-set-4/images_train.csv
-Problem-set-4/labels_test.csv
-Problem-set-4/labels_train.csv
-Problem-set-4/mnist.zip
-Problem-set-4/params_no_regularization.pkl
-Problem-set-4/params_with_regularization.pkl
-Problem-set-4/mix.dat
+Problem-set-4/1-Neural-networks-MNIST-image-classification/images_test.csv
+Problem-set-4/1-Neural-networks-MNIST-image-classification/images_train.csv
+Problem-set-4/1-Neural-networks-MNIST-image-classification/labels_test.csv
+Problem-set-4/1-Neural-networks-MNIST-image-classification/labels_train.csv
+Problem-set-4/1-Neural-networks-MNIST-image-classification/mnist.zip
+Problem-set-4/1-Neural-networks-MNIST-image-classification/params_no_regularization.pkl
+Problem-set-4/1-Neural-networks-MNIST-image-classification/params_with_regularization.pkl
+
+Problem-set-4/4-Independent-components-analysis/mix.dat
