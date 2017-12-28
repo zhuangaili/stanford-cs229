@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.signal import lfilter
 
+from collections import defaultdict
+
 """
 Parts of the code (cart and pole dynamics, and the state
 discretization) are inspired from code available at the RL repository
@@ -91,9 +93,9 @@ performance is reasonable.
 
 
 # Simulation parameters
-pause_time = 0.0001
-min_trial_length_to_start_display = 100
-display_started = min_trial_length_to_start_display == 0
+pause_time = 0.001
+min_trial_length_to_start_display = 0
+display_started = 1
 
 NUM_STATES = 163
 NUM_ACTIONS = 2
@@ -129,16 +131,25 @@ state = cart_pole.get_state(state_tuple)
 
 # Perform all your initializations here:
 # Assume no transitions or rewards have been observed.
-# Initialize the value function array to small random values (0 to 0.10,
-# say).
+# Initialize the value function array to small random values (0 to 0.10, say).
 # Initialize the transition probabilities uniformly (ie, probability of
 # transitioning for state x to state y using action a is exactly
 # 1/NUM_STATES).
 # Initialize all state rewards to zero.
 
 ###### BEGIN YOUR CODE ######
-# TODO:
-raise NotImplementedError('Initializations not implemented')
+transition_record = np.zeros((NUM_STATES, NUM_ACTIONS, NUM_STATES))
+reward_record = np.zeros(NUM_STATES)
+reward_counts = np.zeros(NUM_STATES)
+
+# init value function
+value_func = np.random.rand(NUM_STATES)
+
+# init transition probabilities
+prob_sa = np.ones((NUM_STATES, NUM_ACTIONS, NUM_STATES)) / NUM_STATES
+
+# init rewards
+rewards = np.zeros(NUM_STATES)
 ###### END YOUR CODE ######
 
 # This is the criterion to end the simulation.
@@ -150,7 +161,6 @@ raise NotImplementedError('Initializations not implemented')
 
 consecutive_no_learning_trials = 0
 while consecutive_no_learning_trials < NO_LEARNING_THRESHOLD:
-
     # Write code to choose action (0 or 1).
     # This action choice algorithm is just for illustration. It may
     # convince you that reinforcement learning is nice for control
@@ -158,20 +168,18 @@ while consecutive_no_learning_trials < NO_LEARNING_THRESHOLD:
     # optimal according to the current value function, and the current MDP
     # model.
     ###### BEGIN YOUR CODE ######
-    # TODO:
-    # raise NotImplementedError('Action choice not implemented')
-    # action = 0 if np.random.uniform() < 0.5 else 1
+    action = np.argmax(np.sum(prob_sa[state] * value_func, axis=1))
     ###### END YOUR CODE ######
 
     # Get the next state by simulating the dynamics
-    state_tuple = cart_pole.simulate(action, state_tuple)
+    new_state_tuple = cart_pole.simulate(action, state_tuple)
     # x, x_dot, theta, theta_dot = state_tuple
 
     # Increment simulation time
     time = time + 1
 
     # Get the state number corresponding to new state vector
-    new_state = cart_pole.get_state(state_tuple)
+    new_state = cart_pole.get_state(new_state_tuple)
     # if display_started == 1:
     #     cart_pole.show_cart(state_tuple, pause_time)
 
@@ -191,7 +199,11 @@ while consecutive_no_learning_trials < NO_LEARNING_THRESHOLD:
 
     ###### BEGIN YOUR CODE ######
     # TODO:
-    raise NotImplementedError('Update T and R not implemented')
+    # raise NotImplementedError('Update T and R not implemented')
+    transition_record[state, action, new_state] += 1
+    reward_record[new_state] += R
+    reward_counts[new_state] += 1
+
     # record the number of times `state, action, new_state` occurs
     # record the rewards for every `new_state`
     # record the number of time `new_state` was reached
@@ -200,7 +212,6 @@ while consecutive_no_learning_trials < NO_LEARNING_THRESHOLD:
     # Recompute MDP model whenever pole falls
     # Compute the value function V for the new model
     if new_state == NUM_STATES - 1:
-
         # Update MDP model using the current accumulated statistics about the
         # MDP - transitions and rewards.
         # Make sure you account for the case when a state-action pair has never
@@ -209,8 +220,12 @@ while consecutive_no_learning_trials < NO_LEARNING_THRESHOLD:
         # initialized uniform distribution).
 
         ###### BEGIN YOUR CODE ######
-        # TODO:
-        raise NotImplementedError('MDP  T and R update not implemented')
+        total = transition_record.sum(axis=2)
+        mask = total > 0        # leave those unexperienced (s0, a) pairs put
+        prob_sa[mask] = transition_record[mask] / total[mask].reshape(-1, 1)
+
+        mask = reward_counts > 0
+        rewards[mask] = reward_record[mask] / reward_counts[mask]
         ###### END YOUR CODE ######
 
         # Perform value iteration using the new estimated model for the MDP.
@@ -220,8 +235,27 @@ while consecutive_no_learning_trials < NO_LEARNING_THRESHOLD:
         # variable that checks when the whole simulation must end.
 
         ###### BEGIN YOUR CODE ######
-        # TODO:
-        raise NotImplementedError('Value iteration choice not implemented')
+        # just initialze its value to be bigger than TOLERANCE
+        count = 0
+        while True:
+            new_value_func = (
+                rewards +
+                GAMMA * np.max(np.sum(prob_sa * value_func, axis=2), axis=1)
+            )
+            delta = np.abs(new_value_func - value_func)
+            max_delta = np.max(delta)
+            value_func = new_value_func
+
+            count += 1
+            if max_delta < TOLERANCE:
+                break
+
+        if count == 1:
+            # value function converged within one iteration
+            consecutive_no_learning_trials += 1
+        else:
+            # reset
+            consecutive_no_learning_trials = 0
         ###### END YOUR CODE ######
 
     # Do NOT change this code: Controls the simulation, and handles the case
@@ -246,6 +280,7 @@ while consecutive_no_learning_trials < NO_LEARNING_THRESHOLD:
         state = cart_pole.get_state(state_tuple)
     else:
         state = new_state
+        state_tuple = new_state_tuple
 
 # plot the learning curve (time balanced vs. trial)
 log_tstf = np.log(np.array(time_steps_to_failure))
